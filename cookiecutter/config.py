@@ -4,9 +4,16 @@ import copy
 import logging
 import os
 
+from cookiecutter.exceptions import ConfigDoesNotExistException, InvalidConfiguration
+
+from ruyaml import YAMLError
+
+# from yaml import YAMLError
 import ruyaml
 
-from cookiecutter.exceptions import ConfigDoesNotExistException, InvalidConfiguration
+yaml = ruyaml.YAML(typ='safe')
+# import yaml
+# To swap, all we need to do is swap these lines above.
 
 logger = logging.getLogger(__name__)
 
@@ -62,8 +69,8 @@ def get_config(config_path):
     logger.debug('config_path is %s', config_path)
     with open(config_path, encoding='utf-8') as file_handle:
         try:
-            yaml_dict = ruyaml.YAML(typ='safe').load(file_handle)
-        except ruyaml.YAMLError as e:
+            yaml_dict = yaml.load(file_handle)
+        except YAMLError as e:
             raise InvalidConfiguration(
                 'Unable to parse YAML file {}.'.format(config_path)
             ) from e
