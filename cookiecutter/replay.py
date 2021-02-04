@@ -5,9 +5,14 @@ cookiecutter.replay.
 """
 import json
 import os
-import yaml
 
 from cookiecutter.utils import make_sure_path_exists
+
+import ruyaml
+
+yaml = ruyaml.YAML(typ='safe')
+# import yaml
+# To swap, all we need to do is swap these lines above.
 
 
 def get_file_name(replay_dir, template_name):
@@ -43,7 +48,7 @@ def load_replay_file(replay_file):
         # Since a YAML parser will also parse JSON,
         # we could simply use the YAML parser always.
         if os.path.splitext(replay_file)[1] in ('.yml', '.yaml'):
-            context = yaml.safe_load(infile)
+            context = yaml.load(infile)
         else:
             context = json.load(infile)
 
